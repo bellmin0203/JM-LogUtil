@@ -8,5 +8,6 @@ plugins {
 buildscript {
     dependencies {
         classpath(libs.github.dcendents)
+        classpath(libs.gradle)
     }
 }
