@@ -40,7 +40,7 @@ afterEvaluate {
     publishing {
         publications {
             register("mavenJava", MavenPublication::class) {
-                from(components["java"])
+                from(components["release"])
                 groupId = "com.github.bellmin0203"
                 artifactId = "logutil"
                 version = "1.0.0"
