@@ -86,7 +86,7 @@ class FileDebugTree(private val context: Context) : Timber.DebugTree() {
                 }
             } else {
                 Timber.tag("FileDebugTree").e("Already exists directory: %s", root.absolutePath)
-                return null
+                return root
             }
         } catch (e: NullPointerException) {
             return null
