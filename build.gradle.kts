@@ -9,5 +9,7 @@ buildscript {
     dependencies {
         classpath(libs.github.dcendents)
         classpath(libs.gradle)
+        classpath("com.android.application:com.android.application.gradle.plugin:8.4.2")
+        classpath("com.android.library:com.android.library.gradle.plugin:8.4.2")
     }
 }
