@@ -28,8 +28,6 @@ class FileDebugTree(private val context: Context) : Timber.DebugTree() {
     }
 
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-        super.log(priority, tag, message, t)
-
         val fileNameTimeStamp =
             SimpleDateFormat(LOG_NAME_DATE_FORMAT, Locale.getDefault()).format(Date())
         val logTimeStamp =
@@ -73,25 +71,31 @@ class FileDebugTree(private val context: Context) : Timber.DebugTree() {
 
     private fun createFile(context: Context, fileName: String): File? {
         try {
+            if (!isExternalStorageWritable()) return null
+
             val root = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), LOG_DIR)
 
             if (!root.exists()) {
                 if (root.mkdirs()) {
-                    Timber.tag("FileDebugTree").d("Directory created: %s", root.absolutePath)
+                    Log.d("FileDebugTree", "Directory created: ${root.absolutePath}")
                     return File(root, fileName)
                 } else {
-                    Timber.tag("FileDebugTree")
-                        .e("Failed to create directory: %s", root.absolutePath)
+                    Log.e("FileDebugTree", "Failed to create directory: ${root.absolutePath}")
                     return null
                 }
             } else {
-                Timber.tag("FileDebugTree").e("Already exists directory: %s", root.absolutePath)
-                return root
+                Log.e("FileDebugTree", "Already exists directory: ${root.absolutePath}")
+                return File(root, fileName)
             }
         } catch (e: NullPointerException) {
             return null
         } catch (e: SecurityException) {
             return null
         }
+    }
+
+    private fun isExternalStorageWritable(): Boolean {
+        val state = Environment.getExternalStorageState()
+        return Environment.MEDIA_MOUNTED == state
     }
 }
